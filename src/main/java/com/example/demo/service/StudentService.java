@@ -5,6 +5,8 @@ import com.example.demo.model.Student;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -35,6 +37,13 @@ public class StudentService implements IStudentService {
     @Override
     public String deleteById(int studentId) {
         return istudentRepository.deleteById(studentId);
+    }
+
+    @Override
+    public String getCurrentDate() {
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMddHH:mm:ss");
+        Date date = new Date(System.currentTimeMillis());
+        return formatter.format(date);
     }
 
 }

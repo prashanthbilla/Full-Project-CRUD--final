@@ -15,4 +15,6 @@ public interface IStudentService {
     Student getById(int studentId);
 
     String deleteById(int studentId);
+
+    public String getCurrentDate();
 }

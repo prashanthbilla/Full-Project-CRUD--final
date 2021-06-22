@@ -2,8 +2,6 @@ package com.example.demo.dao;
 
 import com.example.demo.constants.SQLStatements;
 import com.example.demo.model.Student;
-import com.example.demo.service.IStudentService;
-import com.example.demo.service.StudentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -60,6 +58,7 @@ public class StudentRepository implements IStudentRepository {
     @Override
     public List<Student> getAllStudents() {
         return jdbcTemplate.query(SQLStatements.GET_STUDENTS, (rs, rowNum) -> {
+
             return new Student(rs.getInt("studentId"), rs.getString("studentName"), rs.getString("studentEmail"));
         });
     }

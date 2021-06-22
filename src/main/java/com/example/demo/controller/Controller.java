@@ -3,11 +3,21 @@ package com.example.demo.controller;
 import com.example.demo.exceptionhandling.AppResponse;
 import com.example.demo.model.Student;
 import com.example.demo.service.IStudentService;
+import com.sun.deploy.nativesandbox.comm.Response;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.nio.file.Path;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -79,9 +89,33 @@ public class Controller {
         }
     }
 
-    // TODO : FILE UPLOAD API - TAKE FILE FROM POSTMAN AND SAVE IT AT A LOCATION WITH NAME -> NAME+TIMESTAMP.EXTENSTION
-    // TODO : LOMBOK INTEGRATION
-    // TODO : BASIC OF LINUX COMMANDS - https://www.youtube.com/watch?v=G23ef2D-qrY
+    //Uploading the file
+    @Value("${file.upload-dir}")
+    String FILE_DIRECTORY;
+
+    @PostMapping("/upload")
+    public ResponseEntity<Object> fileUpload(@RequestParam("file") MultipartFile file) throws IOException {
+        try {
+            File myFile = new File(FILE_DIRECTORY + file.getOriginalFilename());
+            myFile.createNewFile();
+           /* String s=myFile.getName();
+            StringBuffer sb=new StringBuffer();
+            sb.append(s+ iService.getCurrentDate());
+            System.out.println("----------");
+            System.out.println(sb);
+            System.out.println("----------");
+            String newFileName= new String(sb.toString());*/
+            FileOutputStream fos = new FileOutputStream(myFile);
+            fos.write(file.getBytes());
+            fos.close();
+            AppResponse response = new AppResponse(HttpStatus.OK.value(), "FILE UPLOADED SUCCESSFULLY..", null);
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        } catch (Exception exception) {
+            AppResponse response = new AppResponse(HttpStatus.INTERNAL_SERVER_ERROR.value(), " PLEASE SELECT THE FILE ", null);
+            return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+
+        }
+    }
 
 }
 
