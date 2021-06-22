@@ -77,7 +77,11 @@ public class Controller {
             AppResponse response = new AppResponse(HttpStatus.BAD_REQUEST.value(), "INVALID STUDENT ID", null);
             return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
         }
-
     }
+
+    // TODO : FILE UPLOAD API - TAKE FILE FROM POSTMAN AND SAVE IT AT A LOCATION WITH NAME -> NAME+TIMESTAMP.EXTENSTION
+    // TODO : LOMBOK INTEGRATION
+    // TODO : BASIC OF LINUX COMMANDS - https://www.youtube.com/watch?v=G23ef2D-qrY
+
 }
 

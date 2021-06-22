@@ -60,7 +60,6 @@ public class StudentRepository implements IStudentRepository {
     @Override
     public List<Student> getAllStudents() {
         return jdbcTemplate.query(SQLStatements.GET_STUDENTS, (rs, rowNum) -> {
-
             return new Student(rs.getInt("studentId"), rs.getString("studentName"), rs.getString("studentEmail"));
         });
     }
