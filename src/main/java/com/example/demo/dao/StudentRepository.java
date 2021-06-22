@@ -1,5 +1,6 @@
 package com.example.demo.dao;
 
+import com.example.demo.constants.SQLStatements;
 import com.example.demo.model.Student;
 import com.example.demo.service.IStudentService;
 import com.example.demo.service.StudentService;
@@ -12,24 +13,20 @@ import java.util.List;
 
 @Repository
 public class StudentRepository implements IStudentRepository {
-    private static final String NEW_STUDENT = "insert into student(studentId,studentName,studentEmail) values (?,?,?)";
-    private static final String UPDATE_STUDENT = "update student set studentName=?, studentEmail=? where studentId=?";
-    private static final String GET_STUDENT = "select * from student where studentId=?";
-    private static final String DELETE_STUDENT = "delete from student where studentId=? ";
-    private static final String GET_STUDENTS = "select * from student ";
+
 
     @Autowired
     public JdbcTemplate jdbcTemplate;
 
     @Override
     public Student insertStudent(Student student) {
-        int j = jdbcTemplate.update(NEW_STUDENT, student.getStudentId(), student.getStudentName(), student.getStudentEmail());
+        int j = jdbcTemplate.update(SQLStatements.NEW_STUDENT, student.getStudentId(), student.getStudentName(), student.getStudentEmail());
         return student;
     }
 
     @Override
     public Student updateStudent(Student student) {
-        int j = jdbcTemplate.update(UPDATE_STUDENT, student.getStudentName(), student.getStudentEmail(), student.getStudentId());
+        int j = jdbcTemplate.update(SQLStatements.UPDATE_STUDENT, student.getStudentName(), student.getStudentEmail(), student.getStudentId());
         if (j > 0) {
             return student;
         } else {
@@ -41,7 +38,7 @@ public class StudentRepository implements IStudentRepository {
     public Student getById(int studentId) {
         Student student = null;
         try {
-            student = jdbcTemplate.queryForObject(GET_STUDENT, (rs, rowNum) -> {
+            student = jdbcTemplate.queryForObject(SQLStatements.GET_STUDENT, (rs, rowNum) -> {
                 return new Student(rs.getInt("studentId"), rs.getString("studentName"), rs.getString("studentEmail"));
             }, studentId);
         } catch (EmptyResultDataAccessException e) {
@@ -52,7 +49,7 @@ public class StudentRepository implements IStudentRepository {
 
     @Override
     public String deleteById(int studentId) {
-        int j = jdbcTemplate.update(DELETE_STUDENT, studentId);
+        int j = jdbcTemplate.update(SQLStatements.DELETE_STUDENT, studentId);
         if (j > 0) {
             return "STUDENT DELETED WHERE STUDENT ID = " + studentId;
         } else {
@@ -62,7 +59,7 @@ public class StudentRepository implements IStudentRepository {
 
     @Override
     public List<Student> getAllStudents() {
-        return jdbcTemplate.query(GET_STUDENTS, (rs, rowNum) -> {
+        return jdbcTemplate.query(SQLStatements.GET_STUDENTS, (rs, rowNum) -> {
 
             return new Student(rs.getInt("studentId"), rs.getString("studentName"), rs.getString("studentEmail"));
         });
