@@ -1,9 +1,13 @@
 package com.example.demo.model;
 
-public class Student {
-    public int studentId;
-    public String studentName;
-    public String studentEmail;
+import jdk.nashorn.internal.objects.annotations.Constructor;
+import lombok.*;
+
+public @Data class Student {
+
+    private int studentId;
+    private String studentName;
+    private String studentEmail;
 
     public int getStudentId() {
         return studentId;
